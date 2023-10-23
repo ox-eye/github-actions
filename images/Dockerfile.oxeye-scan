@@ -1,0 +1,40 @@
+################################################
+#                 Build OXCTL                  #
+################################################
+FROM golang:1.19-alpine3.18 AS oxctl_builder
+
+RUN apk update && apk add --no-cache git openssh-client
+
+ARG GH_PERSONAL_ACCESS_TOKEN
+
+RUN git config --global --add url."https://${GH_PERSONAL_ACCESS_TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+RUN git clone --depth 1 --branch v0.0.6 https://github.com/ox-eye/oxctl.git /app
+WORKDIR /app
+RUN go build
+
+################################################
+#              Build final image               #
+################################################
+FROM alpine:3.18
+
+WORKDIR /app
+
+RUN apk update && apk add --update --no-cache \
+    curl \
+    gcc \
+    jq \
+    musl-dev \
+    python3-dev \
+    python3 \
+    py3-pip
+
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
+
+RUN rm -rf /var/cache/apk/*
+
+COPY --from=oxctl_builder /app/oxctl /app/
+
+COPY entrypoint-oxeye-scan.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

@@ -1,0 +1,33 @@
+name: oxeye.io
+author: Samuel Monderer
+description: GitHub Action for Oxeye SCAN
+inputs:
+  token:
+    description: Github Token to retrieve repository metadata
+    required: true
+  host:
+    description: Oxeye API URL
+    required: false
+    default: api.oxeye.net
+  client-id:
+    description: clientId from the API tokens tab in the Admin settings
+    required: true
+  secret:
+    description: secret from the API tokens tab in the Admin settings
+    required: true
+  workspace-id:
+    description: ID of oxeye workspace
+    required: true
+  release:
+    description: Release Tag
+    required: true
+runs:
+  using: docker
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.1
+  args:
+    - ${{ inputs.token }}
+    - ${{ inputs.host }}
+    - ${{ inputs.client-id }}
+    - ${{ inputs.secret }}
+    - ${{ inputs.workspace-id }}
+    - ${{ inputs.release }}
