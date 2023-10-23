@@ -1,0 +1,42 @@
+---
+
+name: 'oxeye.io'
+author: 'Samuel Monderer'
+description: 'GitHub Action for running CICD integration'
+inputs:
+  command:
+    description: 'Oxeye CICD command'
+    required: true
+  host:
+    description: 'Oxeye API URL'
+    required: false
+    default: 'api.oxeye.net'
+  client-id:
+    description: 'clientId from the API tokens tab in the Admin settings'
+    required: true
+  secret:
+    description: 'secret from the API tokens tab in the Admin settings'
+    required: true
+  observer-name:
+    description: 'name of the observer'
+    required: true
+  application-name:
+    description: 'name of the application'
+    required: true
+  tag:
+    description: 'release tag under test'
+    required: true
+outputs:
+  found:
+    description: 'Found items (files, directories etc.)'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.command }}
+    - ${{ inputs.host }}
+    - ${{ inputs.client-id }}
+    - ${{ inputs.secret }}
+    - ${{ inputs.observer-name }}
+    - ${{ inputs.application-name }}
+    - ${{ inputs.tag }}
