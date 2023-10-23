@@ -1,0 +1,23 @@
+---
+
+name: Validate Pull Request
+on:
+  pull_request:
+    branches:  [ main ]
+jobs:
+  pr-lint:
+    runs-on: ubuntu-22.04
+    if: ${{ ! (startsWith(github.head_ref, 'feature/update-openapi-spec')) }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: morrisoncole/pr-lint-action@v1.7.0
+        with:
+          title-regex: "OX-[0-9]+"
+          on-failed-regex-fail-action: true
+          on-failed-regex-request-changes: true
+          on-failed-regex-create-review: true
+          on-failed-regex-comment:
+            "Please add the JIRA ticket reference in your PR description."
+          on-succeeded-regex-dismiss-review-comment:
+            "Fixed, thanks!"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"

@@ -1,0 +1,34 @@
+---
+
+name: Main Branch CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build-docker-images:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: oxeye-scan
+            context: images
+            dockerfile: images/Dockerfile.oxeye-scan
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker build
+        uses: ./.github/actions/docker-build
+        with:
+          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          registry_token: ${{ secrets.GITHUB_TOKEN }}
+          image: ${{ matrix.image }}
+          dockerfile: ${{ matrix.dockerfile }}
+          context: ${{ matrix.context }}
+          push_latest: 'true'
+
+  bump-release:
+    name: Bump Release
+    needs: build-docker-images
+    uses: naviteq/github-actions/.github/workflows/create-release.yaml@v1.1.0
+    secrets:
+      PROJECT_GITHUB_TOKEN: ${{ secrets.OXEYE_ACTIONS_TOKEN }}

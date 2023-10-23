@@ -1,0 +1,86 @@
+---
+
+name: Docker build
+description: Docker build job
+inputs:
+  GH_PERSONAL_ACCESS_TOKEN:
+    description: PAT token for repo checkout
+    required: true
+  registry_token:
+    description: token to login to registry
+    required: true
+  image:
+    description: Docker image name
+    required: true
+  dockerfile:
+    description: Dockerfile location
+    required: false
+  context:
+    description: Docker context path
+    required: true
+  push:
+    description: Do you want to push tags
+    required: false
+    default: true
+  push_latest:
+    description: Do you want to push latest tag
+    required: false
+    default: 'false'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: ox-eye/oxctl
+        path: oxctl
+        token: ${{ inputs.GH_PERSONAL_ACCESS_TOKEN }}
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.19.0'
+    - name: Configure private token
+      shell: bash
+      env:
+        GH_PERSONAL_ACCESS_TOKEN: ${{ inputs.GH_PERSONAL_ACCESS_TOKEN }}
+      run: |
+        git config --global url."https://${GH_PERSONAL_ACCESS_TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+    - name: Run build
+      shell: bash
+      run: |
+        cd oxctl
+        go build
+    - name: show repo
+      shell: bash
+      run: |
+        ls -ls $GITHUB_WORKSPACE/oxctl
+    # Docker preparation
+    - uses: docker/setup-buildx-action@v2
+    - uses: docker/login-action@v2
+      id: login
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.registry_token }}
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ghcr.io/${{ github.repository }}/${{ inputs.image }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=tag
+          type=ref,event=pr
+          type=raw,value=latest,enable=${{ inputs.push_latest == 'true' }}
+          type=raw,value=sha-${{ github.sha }}
+    - name: Docker build
+      uses: docker/build-push-action@v3
+      with:
+        push: ${{ inputs.push }}
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
+        cache-from: type=gha,scope=${{ github.ref_name }}-${{ inputs.image }}
+        cache-to: type=gha,mode=max,scope=${{ github.ref_name }}-${{ inputs.image }}
+        build-args: |
+          GH_PERSONAL_ACCESS_TOKEN=${{ inputs.GH_PERSONAL_ACCESS_TOKEN }}
+        tags: ${{ steps.meta.outputs.tags }}

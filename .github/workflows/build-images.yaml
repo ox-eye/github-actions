@@ -1,0 +1,43 @@
+---
+name: Build action images
+on:
+  pull_request:
+    paths:
+      - 'images/**'
+  workflow_dispatch:
+jobs:
+  prepare:
+    name: Initial preparation and setup
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.prepare.outputs.next_version }}
+      release: ${{ steps.prepare.outputs.next_release }}
+      tag: ${{ steps.prepare.outputs.next_tag }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare
+        id: prepare
+        uses: ./.github/actions/prepare
+
+  buil-actions:
+    name: Action images
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: oxeye-scan
+            context: images
+            dockerfile: images/Dockerfile.oxeye-scan
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker build
+        uses: ./.github/actions/docker-build
+        with:
+          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          registry_token: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ needs.prepare.outputs.tag }}
+          image: ${{ matrix.image }}
+          dockerfile: ${{ matrix.dockerfile }}
+          context: ${{ matrix.context }}
+          push: false

@@ -1,0 +1,43 @@
+---
+
+name: Prepare
+description: Prepares required variables and outputs
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0' # We need to fetch all HEADs to prepare and create a git tag
+    - name: Calculates the next version based on commits
+      id: version
+      uses: paulhatch/semantic-version@v4.0.3
+      with:
+        major_pattern: "(MAJOR)"
+        minor_pattern: "(MINOR)"
+        format: "${major}.${minor}.${patch}"
+        namespace: ""
+        short_tags: false
+        bump_each_commit: false
+
+    - name: Print Outputs
+      shell: bash
+      run: |
+        echo '### Outputs'
+        echo 'next_version is ${{ steps.version.outputs.version }}'
+        echo 'next_release is ${{ steps.version.outputs.version_tag }}'
+        echo 'next_major is ${{ steps.version.outputs.major }}'
+        echo 'next_minor is ${{ steps.version.outputs.minor }}''
+        echo 'next_patch is ${{ steps.version.outputs.patch }}''
+
+outputs:
+  next_version:
+    description: Next version
+    value: ${{ steps.version.outputs.version }}
+  next_release:
+    description: Next Release
+    value: ${{ steps.version.outputs.version_tag }}
+  next_tag:
+    description: Next Tag
+    value: v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}
