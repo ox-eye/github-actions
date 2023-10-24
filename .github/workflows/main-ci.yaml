@@ -31,4 +31,4 @@ jobs:
     needs: build-docker-images
     uses: naviteq/github-actions/.github/workflows/create-release.yaml@v1.1.0
     secrets:
-      PROJECT_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PROJECT_GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
