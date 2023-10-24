@@ -14,10 +14,11 @@ and find all packages used by in the source code and detect vulnerabilities if a
 
 | Variable         | Description                                                  | Type   | Required | Default |
 | :--------------- | :----------------------------------------------------------- | :----- | :------- | :------ |
-| token            | Personal access token (PAT) used to fetch repo info such as owner, name, brnach, ...  | String | Yes      |         |
+| token            | Personal access token (PAT) used to fetch repo info          | String | Yes      |         |
 | client-id        | API Token client ID created in Oxeye's console Admin Settings| UUID   | Yes      |         |
-| secret           | API Token Secrets created in Oxeye's console Admin Settings| UUID   | Yes      |         |
+| secret           | API Token Secrets created in Oxeye's console Admin Settings  | UUID   | Yes      |         |
 | workspace-id     | UUID of oxeye workspace you created in the Oxeye console     | UUID   | Yes      |         |
+| release          | UUID of oxeye workspace you created in the Oxeye console     | UUID   | No       |         |
 
 ## Workflow Summary
 
@@ -44,4 +45,5 @@ jobs:
           client-id: ${{ secrets.OXEYE_CICD_CLIENT_ID }}
           secret:  ${{ secrets.OXEYE_CICD_SECRET }}
           workspace-id: '6860b90d-99e1-4bd4-a93a-353da8aa932d'
+          release: github.ref
 ```
