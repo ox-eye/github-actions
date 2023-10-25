@@ -55,7 +55,7 @@ jobs:
               "oxeye-scan/action.yaml": {
                 "runs.image": "docker://ghcr.io/ox-eye/github-actions/oxeye-scan:${{ needs.prepare.outputs.tag }}"
               },
-              "oxeye-scan/gitlab-ci.yaml": {
+              "oxeye-scan/gitlab-ci.yml": {
                 "oxeye_code_scan.image.name": "ghcr.io/ox-eye/github-actions/oxeye-scan:${{ needs.prepare.outputs.tag }}"
               }
             }
