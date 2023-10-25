@@ -23,7 +23,7 @@ inputs:
     required: true
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.4
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.5
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
