@@ -1,3 +1,4 @@
 logging==0.4.9.6
 requests==2.31.0
 uuid==1.30
+pydantic==2.4.2
