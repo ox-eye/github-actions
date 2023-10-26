@@ -18,7 +18,7 @@ and find all packages used by in the source code and detect vulnerabilities if a
 | client-id        | API Token client ID created in Oxeye's console Admin Settings| UUID   | Yes      |         |
 | secret           | API Token Secrets created in Oxeye's console Admin Settings  | UUID   | Yes      |         |
 | workspace-id     | UUID of oxeye workspace you created in the Oxeye console     | UUID   | Yes      |         |
-| release          | UUID of oxeye workspace you created in the Oxeye console     | UUID   | No       |         |
+| release          | release tag                                                  | UUID   | No       |         |
 
 ## Workflow Summary
 

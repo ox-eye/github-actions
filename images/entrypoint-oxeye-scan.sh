@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [ "$#" -ne 6 ]; then
     echo "Error - Missing argument. Please verify your configuration, or contact support@oxeye.io"
     exit 1
