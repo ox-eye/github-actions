@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "$#" -ne 6 ]; then
+if [ "$#" -lt 5 ]; then
     echo "Error - Missing argument. Please verify your configuration, or contact support@oxeye.io"
     exit 1
 fi
@@ -13,6 +13,10 @@ client_id=$3
 secret=$4
 workspace_id=$5
 release=$6
+
+if [ -z $release ]; then
+    release="release"
+fi
 
 # Get Bearer ToKen
 bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
