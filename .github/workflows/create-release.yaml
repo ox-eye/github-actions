@@ -50,6 +50,7 @@ jobs:
         with:
           branch: main
           createPR: false
+          token: ${{ secrets.OXEYE_ACTIONS_TOKEN}}
           changes: |
             {
               "oxeye-scan/action.yaml": {
