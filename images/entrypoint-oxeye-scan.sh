@@ -46,5 +46,5 @@ curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=
 --header "Accept: application/octet-stream" \
 --header "Authorization: Bearer ${bearerToken}"
 
-# RUN Script
+# RUN SCM Scan Script
 python /app/scm_scan.py --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release
