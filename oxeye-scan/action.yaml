@@ -21,9 +21,12 @@ inputs:
   release:
     description: Release Tag
     required: true
+  excludes:
+    description: List of directores to be excluded from scan
+    required: false
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.12
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.13
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
@@ -31,3 +34,4 @@ runs:
     - ${{ inputs.secret }}
     - ${{ inputs.workspace-id }}
     - ${{ inputs.release }}
+    - ${{ inputs.excludes }}

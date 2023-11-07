@@ -7,12 +7,13 @@ variables:
   OXEYE_SCAN_SECRET: ''
   OXEYE_SCAN_WORKSPACE_ID: ''
   OXEYE_SCAN_RELEASE: ''
+  OXEYE_SCAN_EXCLUDES: ''
 oxeye_code_scan:
   stage: oxeye_code_scan
   image:
-    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.12
+    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.13
     entrypoint:
       - /bin/sh
       - '-c'
   script:
-    - /entrypoint.sh ${OXEYE_SCAN_GITLAB_TOKEN} ${OXEYE_SCAN_OXEYE_URL} ${OXEYE_SCAN_CLIENT_ID} ${OXEYE_SCAN_SECRET} ${OXEYE_SCAN_WORKSPACE_ID} ${OXEYE_SCAN_RELEASE}
+    - /entrypoint.sh ${OXEYE_SCAN_GITLAB_TOKEN} ${OXEYE_SCAN_OXEYE_URL} ${OXEYE_SCAN_CLIENT_ID} ${OXEYE_SCAN_SECRET} ${OXEYE_SCAN_WORKSPACE_ID} "${OXEYE_SCAN_RELEASE}"
