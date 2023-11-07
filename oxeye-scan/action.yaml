@@ -26,7 +26,7 @@ inputs:
     required: false
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:OX-4786-SCM-Add-excludes-option-to-SCM-scan
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.13
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
