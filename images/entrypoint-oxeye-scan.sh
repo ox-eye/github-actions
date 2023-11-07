@@ -13,6 +13,7 @@ client_id=$3
 secret=$4
 workspace_id=$5
 release=$6
+excludes=$7
 
 if [ -z $release ]; then
     release="release"
@@ -47,4 +48,4 @@ curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=
 --header "Authorization: Bearer ${bearerToken}"
 
 # RUN SCM Scan Script
-python /app/scm_scan.py --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release
+python /app/scm_scan.py --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release --excludes "$excludes"
