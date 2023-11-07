@@ -51,4 +51,6 @@ curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=
 python /app/scm_scan.py --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release --excludes "$excludes"
 
 # TODO remove before merge
+echo LOG
+ls -la /tmp/scm.*
 cat /tmp/scm.log
