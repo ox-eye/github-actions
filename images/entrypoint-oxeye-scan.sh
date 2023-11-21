@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+set -x
 
 if [ "$#" -lt 5 ]; then
     echo "Error - Missing argument. Please verify your configuration, or contact support@oxeye.io"
@@ -29,6 +30,7 @@ bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
   \"clientId\": \"${client_id}\",
   \"secret\": \"${secret}\"
 }")
+echo BT = $bearerToken
 
 # GITHUB_API_URL exists in github action context
 if [ -n "$GITHUB_API_URL" ]; then
@@ -44,11 +46,13 @@ else
   exit 1
 fi
 
+echo CICD_TOOL = $cicd_tool
 # Download Script
 curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
 --header "Content-Type: application/json" \
 --header "Accept: application/octet-stream" \
 --header "Authorization: Bearer ${bearerToken}"
+echo EXIT CODE $?
 ls -la /app
 exit 0
 # RUN SCM Scan Script
