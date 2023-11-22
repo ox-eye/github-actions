@@ -22,6 +22,7 @@ WORKDIR /app
 RUN apk update && apk add --update --no-cache \
     curl \
     gcc \
+    git \
     jq \
     musl-dev \
     python3-dev \
