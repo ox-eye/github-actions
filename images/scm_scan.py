@@ -7,6 +7,8 @@ import stat
 import subprocess
 import sys
 import uuid
+import re
+from git import Repo
 from enum import Enum
 from typing import Any, Dict, Optional, TypedDict
 
@@ -32,7 +34,10 @@ class LightzPreSignedURLs(BaseModel):
 class Provider(Enum):
     GitHub = "github"
     GitLab = "gitlab"
+    Jenkins = "jenkins"
 
+
+REMOTE_URL_REGEX = re.compile(r"(git@|https://)(.*)(:|/)(.*)/(.*)\.git")
 
 # Setup Parameters
 class RepositoryParameters(TypedDict):
@@ -195,51 +200,35 @@ def setup_gitlab(
 
 
 def setup_jenkins() -> Optional[RepositoryParameters]:
-    provider = Provider.GitHub.value
-    # if not (
-    #     repository_data := get_repository_data(
-    #         url=f"{gitlab_api_url}/projects/{gitlab_project_id}?private_token={repo_token}"
-    #     )
-    # ):
-    #     return None
-    # if not (
-    #     languages := get_repository_data(
-    #         url=f"{gitlab_api_url}/projects/{gitlab_project_id}/languages?private_token={repo_token}"
-    #     )
-    # ):
-    #     return None
-    # if not (server_url := os.getenv("CI_SERVER_URL")):
-    #     return None
-    # if not (organization := os.getenv("CI_PROJECT_NAMESPACE")):
-    #     return None
-    # if not (repo := os.getenv("CI_PROJECT_NAME")):
-    #     return None
-    # if ci_commit_branch := os.getenv("CI_COMMIT_BRANCH"):
-    #     branch = ci_commit_branch
-    # elif ci_commit_ref_name := os.getenv("CI_COMMIT_REF_NAME"):
-    #     branch = ci_commit_ref_name
-    # else:
-    #     return None
-    # if not (workdir := os.getenv("CI_PROJECT_DIR")):
-    #     return None
-    # if not (arch := os.getenv("CI_RUNNER_EXECUTABLE_ARCH")):
-    #     return None
-    # description = repository_data.get("description", "None")
-    # license = repository_data.get("license", "None")
+    provider = Provider.Jenkins.value
+    if not (workdir := os.getenv("WORKSPACE")):
+        return None
+    if not (repo := Repo(workdir)).bare:
+        return None
+    if not (origin :=repo.remotes["origin"]):
+        return None
+    if len(urls:=list(origin.urls)) < 1:
+        return None
+    match_url = REMOTE_URL_REGEX.search(urls[0])
+    if not match_url:
+        return None
+    server_url = f"https://{match_url.group(2)}"
+    organization = match_url.group(4)
+    name = match_url.group(5)
     run_id = str(uuid.uuid4())
 
     return RepositoryParameters(
         provider=provider,
-        server_url="https://github.com",
-        organization="oxeye",
-        name="cloud-native-lab",
-        description="description",
+        server_url=server_url,
+        organization=organization,
+        name=name,
+        description="None",
         license="None",
         branch="branch",
         languages="{}",
         run_id=run_id,
-        workdir=".",
-        arch="amd64",
+        workdir=workdir,
+        arch="",
     )
 
 

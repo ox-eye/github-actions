@@ -38,5 +38,5 @@ COPY --from=oxctl_builder /app/oxctl /app/
 COPY entrypoint-oxeye-scan.sh /entrypoint.sh
 COPY scm_scan.py /app/scm_scan.py
 
-# ENTRYPOINT ["/bin/sh"]
+# ENTRYPOINT ["/entrypoint.sh]
 CMD ["/entrypoint.sh"]
