@@ -526,6 +526,7 @@ def execute_lightz(
     output_file: str,
     excludes: str,
 ) -> None:
+    logger.info(f"cwd = {os.getcwd}")
     lightz_cmd = (
         f"cd {repo_params['workdir']};"
         f"{LIGHTZ_BINARY_LOCAL} "
