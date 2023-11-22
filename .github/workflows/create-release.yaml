@@ -3,21 +3,7 @@ name: Create Release
 on:
   push:
     tags: ['*']
-  workflow_dispatch:
 jobs:
-  prepare:
-    name: Initial preparation and setup
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.prepare.outputs.next_version }}
-      release: ${{ steps.prepare.outputs.next_release }}
-      tag: ${{ steps.prepare.outputs.next_tag }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Prepare
-        id: prepare
-        uses: ./.github/actions/prepare
-
   build-docker-images:
     name: Build Docker Images
     runs-on: ubuntu-latest
@@ -41,7 +27,7 @@ jobs:
   
   update-github-actions:
     name: Update Image Version in the related action.yaml files
-    needs: [build-docker-images, prepare] 
+    needs: build-docker-images
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -54,10 +40,10 @@ jobs:
           changes: |
             {
               "oxeye-scan/action.yaml": {
-                "runs.image": "docker://ghcr.io/ox-eye/github-actions/oxeye-scan:${{ needs.prepare.outputs.tag }}"
+                "runs.image": "docker://ghcr.io/ox-eye/github-actions/oxeye-scan:${{ github.ref_name }}"
               },
               "oxeye-scan/gitlab-ci.yml": {
-                "oxeye_code_scan.image.name": "ghcr.io/ox-eye/github-actions/oxeye-scan:${{ needs.prepare.outputs.tag }}"
+                "oxeye_code_scan.image.name": "ghcr.io/ox-eye/github-actions/oxeye-scan:${{ github.ref_name }}"
               }
             }
-          message: '[skip ci] Update Docker Image Version for GitHub and GitLab actions to ${{ needs.prepare.outputs.tag }}'
+          message: '[skip ci] Update Docker Image Version for GitHub and GitLab actions to ${{ github.ref_name }}'
