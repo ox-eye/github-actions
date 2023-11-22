@@ -605,19 +605,20 @@ def main() -> None:
             excludes=arguments.excludes,
         )
     except:
+        # Upload Log
+        upload_file(
+            host=arguments.host,
+            client_id=arguments.client_id,
+            secret=arguments.secret,
+            workspace_id=arguments.workspace_id,
+            release=arguments.release,
+            repo_params=repo_params,
+            entity_type="LightzAioLogs",
+            upload_file=SCM_LOG_FILE,
+        )
         sys.exit(4)
 
-    # Upload Log
-    upload_file(
-        host=arguments.host,
-        client_id=arguments.client_id,
-        secret=arguments.secret,
-        workspace_id=arguments.workspace_id,
-        release=arguments.release,
-        repo_params=repo_params,
-        entity_type="LightzAioLogs",
-        upload_file=SCM_LOG_FILE,
-    )
+
 
 
 if __name__ == "__main__":
