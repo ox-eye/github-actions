@@ -26,7 +26,7 @@ inputs:
     required: false
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.15
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.17
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
