@@ -200,12 +200,16 @@ def setup_gitlab(
 
 
 def setup_jenkins() -> Optional[RepositoryParameters]:
-    provider = Provider.Jenkins.value
+    provider = Provider.GitHub.value
+    logger.info("setup_jenkins")
     if not (workdir := os.getenv("WORKSPACE")):
+        logger.info(f"Could get workspace")
         return None
     if not (repo := Repo(workdir)).bare:
+        logger.info(f"Could getr repo")
         return None
     if not (origin :=repo.remotes["origin"]):
+        logger.info(f"Could get origin")
         return None
     if len(urls:=list(origin.urls)) < 1:
         return None
