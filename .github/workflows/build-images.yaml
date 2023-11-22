@@ -36,8 +36,8 @@ jobs:
         with:
           GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           registry_token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ needs.prepare.outputs.tag }}
+          version: ${{ github.ref_name }}
           image: ${{ matrix.image }}
           dockerfile: ${{ matrix.dockerfile }}
           context: ${{ matrix.context }}
-          push: false
+          push: ${{ github.event_name == 'workflow_dispatch' }}
