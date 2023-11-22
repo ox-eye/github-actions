@@ -236,7 +236,7 @@ def setup_jenkins() -> Optional[RepositoryParameters]:
         description="description",
         license="None",
         branch="branch",
-        languages="",
+        languages="{}",
         run_id=run_id,
         workdir=".",
         arch="amd64",
