@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-set -x
 
 if [ "$#" -lt 5 ]; then
     echo "Error - Missing argument. Please verify your configuration, or contact support@oxeye.io"
@@ -43,7 +42,7 @@ else
   exit 1
 fi
 
-Download Script
+# Download Script
 curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
 --header "Content-Type: application/json" \
 --header "Accept: application/octet-stream" \
