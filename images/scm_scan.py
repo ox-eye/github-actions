@@ -200,7 +200,7 @@ def setup_gitlab(
 
 
 def setup_jenkins() -> Optional[RepositoryParameters]:
-    provider = Provider.GitHub.value
+    provider = Provider.Jenkins.value
     logger.info("setup_jenkins")
     if not (workdir := os.getenv("WORKSPACE")):
         logger.info(f"Could not get workspace")
