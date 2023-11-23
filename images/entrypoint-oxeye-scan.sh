@@ -16,8 +16,6 @@ workspace_id=$5
 release=$6
 excludes=$7
 
-echo --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release --excludes "$excludes"
-
 if [ -z $release ]; then
     release="release"
 fi
@@ -45,11 +43,11 @@ else
   exit 1
 fi
 
-# Download Script
-# curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
-# --header "Content-Type: application/json" \
-# --header "Accept: application/octet-stream" \
-# --header "Authorization: Bearer ${bearerToken}"
+Download Script
+curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
+--header "Content-Type: application/json" \
+--header "Accept: application/octet-stream" \
+--header "Authorization: Bearer ${bearerToken}"
 
 # RUN SCM Scan Script
 python /app/scm_scan.py --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release --excludes "$excludes"
