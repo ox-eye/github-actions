@@ -30,19 +30,20 @@ bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
 
 # GITHUB_API_URL exists in github action context
 if [ -n "$GITHUB_API_URL" ]; then
-    provider="github"
-    # /scan-github.sh $token $host $client_id $secret $workspace_id
+    cicd_tool="github"
 # CI_API_V4_URL exists in gitlab ci context
 elif [ -n "$CI_API_V4_URL" ]; then
-    provider="gitlab"
-    # /scan-gitlab.sh $token $host $client_id $secret $workspace_id
+    cicd_tool="gitlab"
+# CI_API_V4_URL exists in gitlab ci context
+elif [ -n "$JENKINS_URL" ]; then
+    cicd_tool="jenkins"
 else
   echo "Error - could not determine environment. aborting..."
   exit 1
 fi
 
 # Download Script
-curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${provider}" \
+curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
 --header "Content-Type: application/json" \
 --header "Accept: application/octet-stream" \
 --header "Authorization: Bearer ${bearerToken}"
