@@ -2,18 +2,18 @@ import argparse
 import json
 import logging
 import os
+import re
 import shlex
 import stat
 import subprocess
 import sys
 import uuid
-import re
-from git import Repo
 from enum import Enum
 from typing import Any, Dict, Optional, TypedDict
 
 import pydantic
 import requests
+from git import Repo
 from pydantic import BaseModel
 
 logging.basicConfig(
@@ -32,6 +32,7 @@ class LightzPreSignedURLs(BaseModel):
 
 
 class Provider(Enum):
+    BitBucket = "bitbucket"
     GitHub = "github"
     GitLab = "gitlab"
     Jenkins = "jenkins"
@@ -55,7 +56,8 @@ class RepositoryParameters(TypedDict):
 
 
 # GENERAL
-SCM_LOG_FILE = "/tmp/scm.log"
+SCM_LOG_LOCATION = "/tmp/scm.log"
+LIGHTZ_AIO_LOG_LOCATION = "/tmp/lightz-aio.log"
 
 # Syft Parameters
 SYFT_VERSION = "v0.70.0"
@@ -208,10 +210,10 @@ def setup_jenkins() -> Optional[RepositoryParameters]:
     if (repo := Repo(workdir)).bare:
         logger.info(f"Could not get repo")
         return None
-    if not (origin :=repo.remotes["origin"]):
+    if not (origin := repo.remotes["origin"]):
         logger.info(f"Could not get origin")
         return None
-    if len(urls:=list(origin.urls)) < 1:
+    if len(urls := list(origin.urls)) < 1:
         return None
     match_url = REMOTE_URL_REGEX.search(urls[0])
     if not match_url:
@@ -320,9 +322,11 @@ def download_file(url: str, local_filename: str) -> None:
         raise
 
 
-def run_shell_cmd_with_log(cmd: str, err_msg: str) -> None:
+def run_shell_cmd_with_log(
+    cmd: str, err_msg: str, log_location: str = SCM_LOG_LOCATION
+) -> None:
     try:
-        with open(SCM_LOG_FILE, "a") as log_file:
+        with open(log_location, "a") as log_file:
             try:
                 subprocess.run(
                     cmd,
@@ -336,13 +340,15 @@ def run_shell_cmd_with_log(cmd: str, err_msg: str) -> None:
                 logger.exception(f"{err_msg} cmd={cmd}")
                 raise
     except (FileNotFoundError, PermissionError, OSError):
-        logger.exception(f"Error opening file {SCM_LOG_FILE}")
+        logger.exception(f"Error opening file {log_location}")
         raise
 
 
-def run_shell_cmd_with_result(cmd: str, err_msg: str) -> str:
+def run_shell_cmd_with_result(
+    cmd: str, err_msg: str, log_location: str = SCM_LOG_LOCATION
+) -> str:
     try:
-        with open(SCM_LOG_FILE, "a") as log_file:
+        with open(log_location, "a") as log_file:
             try:
                 result = subprocess.run(
                     cmd,
@@ -356,7 +362,7 @@ def run_shell_cmd_with_result(cmd: str, err_msg: str) -> str:
                 logger.exception(f"{err_msg} cmd={cmd}")
                 raise
     except (FileNotFoundError, PermissionError, OSError):
-        logger.exception(f"Error opening file {SCM_LOG_FILE}")
+        logger.exception(f"Error opening file {log_location}")
         raise
 
     return result.stdout.decode()
@@ -599,7 +605,7 @@ def main() -> None:
             excludes=arguments.excludes,
         )
     except:
-        # Upload Log
+        # Upload Lightz AIO Log
         upload_file(
             host=arguments.host,
             client_id=arguments.client_id,
@@ -608,11 +614,21 @@ def main() -> None:
             release=arguments.release,
             repo_params=repo_params,
             entity_type="LightzAioLogs",
-            upload_file=SCM_LOG_FILE,
+            upload_file=LIGHTZ_AIO_LOG_LOCATION,
         )
         sys.exit(4)
 
-
+    # Upload Lightz AIO Log
+    upload_file(
+        host=arguments.host,
+        client_id=arguments.client_id,
+        secret=arguments.secret,
+        workspace_id=arguments.workspace_id,
+        release=arguments.release,
+        repo_params=repo_params,
+        entity_type="LightzAioLogs",
+        upload_file=LIGHTZ_AIO_LOG_LOCATION,
+    )
 
 
 if __name__ == "__main__":
