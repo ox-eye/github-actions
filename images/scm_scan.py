@@ -203,13 +203,13 @@ def setup_jenkins() -> Optional[RepositoryParameters]:
     provider = Provider.GitHub.value
     logger.info("setup_jenkins")
     if not (workdir := os.getenv("WORKSPACE")):
-        logger.info(f"Could get workspace")
+        logger.info(f"Could not get workspace")
         return None
-    if not (repo := Repo(workdir)).bare:
-        logger.info(f"Could getr repo")
+    if (repo := Repo(workdir)).bare:
+        logger.info(f"Could not get repo")
         return None
     if not (origin :=repo.remotes["origin"]):
-        logger.info(f"Could get origin")
+        logger.info(f"Could not get origin")
         return None
     if len(urls:=list(origin.urls)) < 1:
         return None
