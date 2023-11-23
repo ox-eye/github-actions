@@ -40,6 +40,7 @@ class Provider(Enum):
 
 REMOTE_URL_REGEX = re.compile(r"(git@|https://)(.*)(:|/)(.*)/(.*)\.git")
 
+
 # Setup Parameters
 class RepositoryParameters(TypedDict):
     provider: str
@@ -534,7 +535,11 @@ def execute_lightz(
         f"{' '.join(['--exclude ' + shlex.quote(exclude) for exclude in shlex.split(excludes)])} "
         f"--target . "
     )
-    run_shell_cmd_with_log(lightz_cmd, "Failed Running Source Code Scan")
+    run_shell_cmd_with_log(
+        cmd=lightz_cmd,
+        err_msg="Failed Running Source Code Scan",
+        log_location=LIGHTZ_AIO_LOG_LOCATION,
+    )
 
 
 def run_lightz(
