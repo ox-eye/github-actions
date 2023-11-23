@@ -38,8 +38,9 @@ class Provider(Enum):
     Jenkins = "jenkins"
 
 
-REMOTE_URL_REGEX = re.compile(r"(git@|https://)(.*)(:|/)(.*)/(.*)\.git")
-
+REMOTE_URL_REGEX = re.compile(
+    r"(git@|https://)(?P<server_url>.*)(:|/)(?P<organization>.*)/(?P<name>.*)(.git|)"
+)
 
 # Setup Parameters
 class RepositoryParameters(TypedDict):
@@ -204,24 +205,25 @@ def setup_gitlab(
 
 def setup_jenkins() -> Optional[RepositoryParameters]:
     provider = Provider.Jenkins.value
-    logger.info("setup_jenkins")
     if not (workdir := os.getenv("WORKSPACE")):
-        logger.info(f"Could not get workspace")
+        logger.error(f"Could not get workspace")
         return None
     if (repo := Repo(workdir)).bare:
-        logger.info(f"Could not get repo")
+        logger.error(f"Could not get repo")
         return None
     if not (origin := repo.remotes["origin"]):
-        logger.info(f"Could not get origin")
+        logger.error(f"Could not get origin")
         return None
     if len(urls := list(origin.urls)) < 1:
+        logger.error(f"Could not get origin urls")
         return None
     match_url = REMOTE_URL_REGEX.search(urls[0])
     if not match_url:
+        logger.error(f"Could not parse origin url")
         return None
-    server_url = f"https://{match_url.group(2)}"
-    organization = match_url.group(4)
-    name = match_url.group(5)
+    server_url = f"https://{match_url.group('server_url')}"
+    organization = match_url.group("organization")
+    name = match_url.group("name")
     run_id = str(uuid.uuid4())
 
     return RepositoryParameters(
@@ -256,7 +258,7 @@ def setup(repo_token: str) -> Optional[RepositoryParameters]:
             gitlab_project_id=gitlab_project_id,
             repo_token=repo_token,
         )
-    elif os.getenv("JENKINS_URL"):
+    elif "JENKINS_URL" in os.environ:
         return setup_jenkins()
 
     logger.error(f"Error - could not determine environment. aborting...")
