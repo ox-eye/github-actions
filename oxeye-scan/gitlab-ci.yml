@@ -11,7 +11,7 @@ variables:
 oxeye_code_scan:
   stage: oxeye_code_scan
   image:
-    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.19
+    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.20
     entrypoint:
       - /bin/sh
       - '-c'
