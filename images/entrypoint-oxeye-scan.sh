@@ -28,15 +28,16 @@ bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
   \"secret\": \"${secret}\"
 }")
 
-# GITHUB_API_URL exists in github action context
 if [ -n "$GITHUB_API_URL" ]; then
     cicd_tool="github"
-# CI_API_V4_URL exists in gitlab ci context
 elif [ -n "$CI_API_V4_URL" ]; then
     cicd_tool="gitlab"
-# CI_API_V4_URL exists in gitlab ci context
 elif [ -n "$JENKINS_URL" ]; then
     cicd_tool="jenkins"
+elif [ -n "$BUILD_REPOSITORY_URI"]; then
+    cicd_tool="azure"
+elif [ -n "$BITBUCKET_PROJECT_UUID"]; then
+    cicd_tool="bitbucket"
 else
   echo "Error - could not determine environment. aborting..."
   exit 1
