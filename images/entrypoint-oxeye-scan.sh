@@ -36,7 +36,7 @@ elif [ -n "$JENKINS_URL" ]; then
     cicd_tool="jenkins"
 elif [ -n "$BUILD_REPOSITORY_URI"]; then
     cicd_tool="azure"
-elif [ -n "$BUILD_REPOSITORY_URI"]; then
+elif [ -n "$BITBUCKET_PROJECT_UUID"]; then
     cicd_tool="bitbucket"
 else
   echo "Error - could not determine environment. aborting..."
