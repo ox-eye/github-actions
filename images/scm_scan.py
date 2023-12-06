@@ -36,11 +36,16 @@ class Provider(Enum):
     GitHub = "github"
     GitLab = "gitlab"
     Jenkins = "jenkins"
+    Azure ="azure"
 
 
 REMOTE_URL_REGEX = re.compile(
     r"(git@|https://)(?P<server_url>.*)(:|/)(?P<organization>.*)/(?P<name>.*?)(.git|$)"
 )
+
+# git@github.com:ox-eye/github-actions.git
+# https://github.com/ox-eye/oxeye-rulez
+# https://ox-eye@dev.azure.com/ox-eye/cloud-native-lab/_git/cloud-native-lab
 
 # Setup Parameters
 class RepositoryParameters(TypedDict):
@@ -241,6 +246,88 @@ def setup_jenkins() -> Optional[RepositoryParameters]:
     )
 
 
+def setup_azure() -> Optional[RepositoryParameters]:
+    provider = Provider.Azure.value
+    if not (workdir := os.getenv("BUILD_REPOSITORY_LOCALPATH")):
+        logger.error(f"Could not get repository localpath")
+        return None
+    if (repo := Repo(workdir)).bare:
+        logger.error(f"Could not get repo")
+        return None
+    if not (origin := repo.remotes["origin"]):
+        logger.error(f"Could not get origin")
+        return None
+    if len(urls := list(origin.urls)) < 1:
+        logger.error(f"Could not get origin urls")
+        return None
+    match_url = REMOTE_URL_REGEX.search(urls[0])
+    if not match_url:
+        logger.error(f"Could not parse origin url")
+        return None
+    server_url = f"https://{match_url.group('server_url')}"
+    organization = match_url.group("organization")
+    name = match_url.group("name")
+    run_id = str(uuid.uuid4())
+    
+    logger.info(f"{urls[0]=} {server_url=} {organization=} {name=}")
+    sys.exit(0)
+
+    return RepositoryParameters(
+        provider=provider,
+        server_url=server_url,
+        organization=organization,
+        name=name,
+        description="None",
+        license="None",
+        branch="branch",
+        languages="{}",
+        run_id=run_id,
+        workdir=workdir,
+        arch="",
+    )
+
+
+def setup_bitbucket() -> Optional[RepositoryParameters]:
+    provider = Provider.Azure.value
+    if not (workdir := os.getenv("BITBUCKET_CLONE_DIR")):
+        logger.error(f"Could not get repository localpath")
+        return None
+    if (repo := Repo(workdir)).bare:
+        logger.error(f"Could not get repo")
+        return None
+    if not (origin := repo.remotes["origin"]):
+        logger.error(f"Could not get origin")
+        return None
+    if len(urls := list(origin.urls)) < 1:
+        logger.error(f"Could not get origin urls")
+        return None
+    match_url = REMOTE_URL_REGEX.search(urls[0])
+    if not match_url:
+        logger.error(f"Could not parse origin url")
+        return None
+    server_url = f"https://{match_url.group('server_url')}"
+    organization = match_url.group("organization")
+    name = match_url.group("name")
+    run_id = str(uuid.uuid4())
+
+    logger.info(f"{urls[0]=} {server_url=} {organization=} {name=}")
+    sys.exit(0)
+
+    return RepositoryParameters(
+        provider=provider,
+        server_url=server_url,
+        organization=organization,
+        name=name,
+        description="None",
+        license="None",
+        branch="branch",
+        languages="{}",
+        run_id=run_id,
+        workdir=workdir,
+        arch="",
+    )
+
+
 def setup(repo_token: str) -> Optional[RepositoryParameters]:
     if (github_api_url := os.getenv("GITHUB_API_URL")) and (
         github_repository := os.getenv("GITHUB_REPOSITORY")
@@ -260,6 +347,10 @@ def setup(repo_token: str) -> Optional[RepositoryParameters]:
         )
     elif "JENKINS_URL" in os.environ:
         return setup_jenkins()
+    elif "BUILD_REPOSITORY_LOCALPATH" in os.environ:
+        return setup_azure()
+    elif "BITBUCKET_CLONE_DIR" in os.environ:
+        return setup_bitbucket()
 
     logger.error(f"Error - could not determine environment. aborting...")
     return None
