@@ -292,19 +292,23 @@ def setup_bitbucket() -> Optional[RepositoryParameters]:
     if not (workdir := os.getenv("BITBUCKET_CLONE_DIR")):
         logger.error(f"Could not get repository localpath")
         return None
+
     if (repo := Repo(workdir)).bare:
         logger.error(f"Could not get repo")
         return None
+
     if not (origin := repo.remotes["origin"]):
         logger.error(f"Could not get origin")
         return None
+
     if len(urls := list(origin.urls)) < 1:
         logger.error(f"Could not get origin urls")
         return None
-    match_url = REMOTE_URL_REGEX.search(urls[0])
-    if not match_url:
-        logger.error(f"Could not parse origin url")
+
+    if not (match_url := REMOTE_URL_REGEX.search(urls[0])):
+        logger.error(f"Could not parse origin url",extra={"url": match_url})
         return None
+
     server_url = f"https://{match_url.group('server_url')}"
     organization = match_url.group("organization")
     name = match_url.group("name")
