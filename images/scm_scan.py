@@ -305,6 +305,8 @@ def setup_bitbucket() -> Optional[RepositoryParameters]:
         logger.error(f"Could not get origin urls")
         return None
 
+    logger.info(f"{repo=} {origin=} {urls=}")
+
     if not (match_url := REMOTE_URL_REGEX.search(urls[0])):
         logger.error(f"Could not parse origin url {match_url}")
         return None
@@ -315,8 +317,6 @@ def setup_bitbucket() -> Optional[RepositoryParameters]:
     run_id = str(uuid.uuid4())
 
     logger.info(f"{urls[0]=} {server_url=} {organization=} {name=}")
-    sys.exit(0)
-
     return RepositoryParameters(
         provider=provider,
         server_url=server_url,
