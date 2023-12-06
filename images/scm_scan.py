@@ -40,7 +40,7 @@ class Provider(Enum):
 
 
 REMOTE_URL_REGEX = re.compile(
-    r"(git@|https://)(?P<server_url>.*)(:|/)(?P<organization>.*)/(?P<name>.*?)(.git|$)"
+    r"(git@|https://)(?P<server_url>.*?)(:|/)(?P<organization>.*)/(?P<name>.*?)(.git|$)"
 )
 
 # git@github.com:ox-eye/github-actions.git
