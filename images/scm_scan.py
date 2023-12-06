@@ -285,7 +285,7 @@ def setup_azure() -> Optional[RepositoryParameters]:
 
 
 def setup_bitbucket() -> Optional[RepositoryParameters]:
-    provider = Provider.Azure.value
+    provider = Provider.BitBucket.value
     if not (workdir := os.getenv("BITBUCKET_CLONE_DIR")):
         logger.error(f"Could not get repository localpath")
         return None
