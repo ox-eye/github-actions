@@ -40,7 +40,7 @@ class Provider(Enum):
 
 
 REMOTE_URL_REGEX = re.compile(
-    r"(git@|https?://)(?P<server_url>.*)(:|/)(?P<organization>.*)/(?P<name>.*?)(.git|$)"
+    r"(git@|https://)(?P<server_url>.*?)(:|/)(?P<organization>.*)/(?P<name>.*?)(.git|$)"
 )
 
 # git@github.com:ox-eye/github-actions.git
@@ -269,9 +269,6 @@ def setup_azure() -> Optional[RepositoryParameters]:
     name = match_url.group("name")
     run_id = str(uuid.uuid4())
     
-    logger.info(f"{urls[0]=} {server_url=} {organization=} {name=}")
-    sys.exit(0)
-
     return RepositoryParameters(
         provider=provider,
         server_url=server_url,
