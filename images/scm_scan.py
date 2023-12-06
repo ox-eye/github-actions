@@ -306,7 +306,7 @@ def setup_bitbucket() -> Optional[RepositoryParameters]:
         return None
 
     if not (match_url := REMOTE_URL_REGEX.search(urls[0])):
-        logger.error(f"Could not parse origin url",extra={"url": match_url})
+        logger.error(f"Could not parse origin url {match_url}")
         return None
 
     server_url = f"https://{match_url.group('server_url')}"
