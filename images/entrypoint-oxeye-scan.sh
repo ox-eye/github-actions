@@ -28,6 +28,11 @@ bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
   \"secret\": \"${secret}\"
 }")
 
+if echo "$bearerToken" | grep -qi "failed"; then
+  echo "Error - failed to authenticate token"
+  exit 1
+fi
+
 if [ -n "$GITHUB_API_URL" ]; then
     cicd_tool="github"
 elif [ -n "$CI_API_V4_URL" ]; then
