@@ -34,12 +34,12 @@ elif [ -n "$CI_API_V4_URL" ]; then
     cicd_tool="gitlab"
 elif [ -n "$JENKINS_URL" ]; then
     cicd_tool="jenkins"
-elif [ -n "$BUILD_REPOSITORY_LOCALPATH"]; then
+elif [ -n "$BUILD_REPOSITORY_LOCALPATH" ]; then
     git config --global --add safe.directory "*"
     git remote get-url origin
     exit 0
     cicd_tool="azure"
-elif [ -n "$BITBUCKET_CLONE_DIR"]; then
+elif [ -n "$BITBUCKET_CLONE_DIR" ]; then
     cicd_tool="bitbucket"
 else
   echo "Error - could not determine environment. aborting..."
