@@ -1,4 +1,0 @@
-steps:  
-- bash: |
-    echo "Hello from a different Azure DevOps Organization!"
-  displayName: 'Hello from Beta'
