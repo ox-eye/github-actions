@@ -40,7 +40,6 @@ elif [ -n "$CI_API_V4_URL" ]; then
 elif [ -n "$JENKINS_URL" ]; then
     cicd_tool="jenkins"
 elif [ -n "$BUILD_REPOSITORY_LOCALPATH" ]; then
-    git config --global --add safe.directory "*"
     cicd_tool="azure"
 elif [ -n "$BITBUCKET_CLONE_DIR" ]; then
     cicd_tool="bitbucket"
@@ -48,6 +47,8 @@ else
   echo "Error - could not determine environment. aborting..."
   exit 1
 fi
+
+git config --global --add safe.directory "*"
 
 # Download Script
 curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
