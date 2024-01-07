@@ -24,6 +24,10 @@ inputs:
   excludes:
     description: List of directores to be excluded from scan
     required: false
+  partial:
+    description: Scan only changes
+    required: false
+    default: 'false'
 runs:
   using: docker
   image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.23
@@ -35,3 +39,4 @@ runs:
     - ${{ inputs.workspace-id }}
     - ${{ inputs.release }}
     - ${{ inputs.excludes }}
+    - ${{ inputs.partial }}
