@@ -35,6 +35,7 @@ RUN pip install -r requirements.txt
 RUN rm -rf /var/cache/apk/*
 
 COPY --from=oxctl_builder /app/oxctl /app/
+COPY  ./scm_scan.py /app/
 
 COPY entrypoint-oxeye-scan.sh /entrypoint.sh
 
