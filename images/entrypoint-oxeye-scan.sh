@@ -14,10 +14,7 @@ secret=$4
 workspace_id=$5
 release=$6
 excludes=$7
-
-if [ -z $release ]; then
-    release="release"
-fi
+partial=$8
 
 # Get Bearer ToKen
 bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
@@ -57,4 +54,24 @@ curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=
 --header "Authorization: Bearer ${bearerToken}"
 
 # RUN SCM Scan Script
-python /app/scm_scan.py --host $host --repo-token $token --client-id $client_id --secret $secret --workspace-id $workspace_id --release $release --excludes "$excludes"
+default_flags="--host $host 
+    --repo-token $token
+    --client-id $client_id
+    --secret $secret
+    --workspace-id $workspace_id"
+
+scm_scan_flags=$default_flags
+
+if [ -n "$release" ]; then
+    scm_scan_flags="$scm_scan_flags --release $release"
+fi
+
+if [ -n "$excludes" ]; then
+    scm_scan_flags="$scm_scan_flags --excludes $excludes"
+fi
+
+if [ "$partial" == "true" ]; then
+    scm_scan_flags="$scm_scan_flags --partial"
+fi
+
+python /app/scm_scan.py $scm_scan_flags
