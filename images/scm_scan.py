@@ -632,6 +632,7 @@ def get_changed_files(
     temp_branch = "temp_branch"
     repo = Repo(workdir)
     current_sha = repo.head.object.hexsha
+    repo.git.fetch()
     repo.git.checkout(source_branch)
     repo.git.checkout(b=temp_branch)
     head_commit = repo.head.commit
