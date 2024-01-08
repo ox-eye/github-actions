@@ -212,8 +212,10 @@ def setup_github(
         workdir=workdir,
         description=repository_data.get("description", "None"),
         branch=os.environ.get("GITHUB_REF_NAME", "NA"),
-        source_branch=os.environ.get("GITHUB_HEAD_REF", ""),
-        target_branch=os.environ.get("GITHUB_BASE_REF", ""),
+        # source_branch=os.environ.get("GITHUB_HEAD_REF", ""),
+        source_branch="test-schmil-2",
+        # target_branch=os.environ.get("GITHUB_BASE_REF", ""),
+        target_branch="test-schmil",
     )
 
     return cicd_tool_parameters
