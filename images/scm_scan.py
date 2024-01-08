@@ -684,6 +684,8 @@ def execute_lightz(
 
     lightz_cmd = lightz_cmd + f"--target . "
 
+    os.system(f"cat {partial_file.name}")
+
     run_shell_cmd_with_log(
         cmd=lightz_cmd,
         cwd=workdir,
