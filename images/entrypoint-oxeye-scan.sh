@@ -75,3 +75,5 @@ if [ "$partial" == "true" ]; then
 fi
 
 python /app/scm_scan.py $scm_scan_flags
+
+cat /tmp/scm.log
