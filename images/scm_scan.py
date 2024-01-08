@@ -424,6 +424,7 @@ def run_shell_cmd_with_log(
 
             except (subprocess.SubprocessError, subprocess.CalledProcessError):
                 logger.exception(f"{err_msg} cmd={cmd}")
+                os.system(f"cat {log_location}")
                 raise
     except (FileNotFoundError, PermissionError, OSError):
         logger.exception(f"Error opening file {log_location}")
