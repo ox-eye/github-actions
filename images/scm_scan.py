@@ -684,7 +684,7 @@ def execute_lightz(
 
     lightz_cmd = lightz_cmd + f"--target . "
 
-    print(f"@@@@@@@@@@ {changed_files=}")
+    print(f"@@@@@@@@@@ {source_branch=} {target_branch=} {changed_files=}")
     os.system(f"echo #########################;cat {partial_file.name}")
 
     run_shell_cmd_with_log(
