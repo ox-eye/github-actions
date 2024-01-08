@@ -766,30 +766,30 @@ def main() -> None:
     keep_alive_thread.daemon = True
     keep_alive_thread.start()
 
-    try:
-        release_start(
-            host=arguments.host,
-            client_id=arguments.client_id,
-            secret=arguments.secret,
-            workspace_id=arguments.workspace_id,
-            release=arguments.release,
-        )
-    except:
-        exit_and_stop_keepalive(2, keep_alive_thread)
-    try:
-        run_syft(
-            host=arguments.host,
-            client_id=arguments.client_id,
-            secret=arguments.secret,
-            workspace_id=arguments.workspace_id,
-            cicd_tool_params=cicd_tool_params,
-            repo_params=repo_params,
-            run_id=run_id,
-            release=arguments.release,
-            excludes=arguments.excludes,
-        )
-    except:
-        exit_and_stop_keepalive(3, keep_alive_thread)
+    # try:
+    #     release_start(
+    #         host=arguments.host,
+    #         client_id=arguments.client_id,
+    #         secret=arguments.secret,
+    #         workspace_id=arguments.workspace_id,
+    #         release=arguments.release,
+    #     )
+    # except:
+    #     exit_and_stop_keepalive(2, keep_alive_thread)
+    # try:
+    #     run_syft(
+    #         host=arguments.host,
+    #         client_id=arguments.client_id,
+    #         secret=arguments.secret,
+    #         workspace_id=arguments.workspace_id,
+    #         cicd_tool_params=cicd_tool_params,
+    #         repo_params=repo_params,
+    #         run_id=run_id,
+    #         release=arguments.release,
+    #         excludes=arguments.excludes,
+    #     )
+    # except:
+    #     exit_and_stop_keepalive(3, keep_alive_thread)
     try:
         run_lightz(
             host=arguments.host,
