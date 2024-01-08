@@ -636,10 +636,12 @@ def get_changed_files(
     repo.git.fetch()
     repo.git.checkout(source_branch)
     repo.git.checkout(b=temp_branch)
+    os.system(f"ls -l {workdir}")
     head_commit = repo.head.commit
     repo.git.config("--global", "user.email", "dummy@dummy.com")
     repo.git.config("--global", "user.name", "Dummy")
     repo.git.merge(target_branch)
+    os.system(f"ls -l {workdir}")
     diffs = head_commit.diff()
     for diff in diffs:
         changed_files.append(diff.b_path)
