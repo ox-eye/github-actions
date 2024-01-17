@@ -23,4 +23,5 @@ oxeye_scan:
       - /bin/sh
       - '-c'
   script:
+    - echo ${OXEYE_SCAN_PARTIAL}
     - /entrypoint.sh ${OXEYE_SCAN_GITLAB_TOKEN} ${OXEYE_SCAN_OXEYE_URL} ${OXEYE_SCAN_CLIENT_ID} ${OXEYE_SCAN_SECRET} ${OXEYE_SCAN_WORKSPACE_ID} "${OXEYE_SCAN_RELEASE}" "${OXEYE_SCAN_EXCLUDES}" "${OXEYE_SCAN_PARTIAL}"
