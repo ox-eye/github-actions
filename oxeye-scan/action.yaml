@@ -39,4 +39,4 @@ runs:
     - ${{ inputs.workspace-id }}
     - ${{ inputs.release }}
     - ${{ inputs.excludes }}
-    - ${{ inputs.partial }}
+    - ${{ github.event_name == 'pull_request' && inputs.partial != 'false' }}
