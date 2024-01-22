@@ -6,22 +6,14 @@ variables:
   OXEYE_SCAN_WORKSPACE_ID: ''
   OXEYE_SCAN_RELEASE: ''
   OXEYE_SCAN_EXCLUDES: ''
-  OXEYE_SCAN_PARTIAL: ''
+  OXEYE_SCAN_FULL: ''
 
 oxeye_scan:
   stage: oxeye_code_scan
-  rules:
-      - if: $CI_PIPELINE_SOURCE == 'merge_request_event' && $OXEYE_SCAN_PARTIAL == ''
-        variables:
-          OXEYE_SCAN_PARTIAL: 'true'
-      - when: always
-        variables:
-          OXEYE_SCAN_PARTIAL: 'false'
   image:
     name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.24
     entrypoint:
       - /bin/sh
       - '-c'
   script:
-    - echo ${OXEYE_SCAN_PARTIAL}
-    - /entrypoint.sh ${OXEYE_SCAN_GITLAB_TOKEN} ${OXEYE_SCAN_OXEYE_URL} ${OXEYE_SCAN_CLIENT_ID} ${OXEYE_SCAN_SECRET} ${OXEYE_SCAN_WORKSPACE_ID} "${OXEYE_SCAN_RELEASE}" "${OXEYE_SCAN_EXCLUDES}" "${OXEYE_SCAN_PARTIAL}"
+    - /entrypoint.sh ${OXEYE_SCAN_GITLAB_TOKEN} ${OXEYE_SCAN_OXEYE_URL} ${OXEYE_SCAN_CLIENT_ID} ${OXEYE_SCAN_SECRET} ${OXEYE_SCAN_WORKSPACE_ID} "${OXEYE_SCAN_RELEASE}" "${OXEYE_SCAN_EXCLUDES}" "${OXEYE_SCAN_FULL}"

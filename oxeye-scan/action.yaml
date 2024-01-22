@@ -24,7 +24,7 @@ inputs:
   excludes:
     description: List of directores to be excluded from scan
     required: false
-  partial:
+  full:
     description: Scan only changes
     required: false
     default: ''
@@ -39,4 +39,4 @@ runs:
     - ${{ inputs.workspace-id }}
     - ${{ inputs.release }}
     - ${{ inputs.excludes }}
-    - ${{ github.event_name == 'pull_request' && inputs.partial != 'false' }}
+    - ${{ inputs.full }}
