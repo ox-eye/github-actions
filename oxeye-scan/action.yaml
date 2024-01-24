@@ -24,7 +24,7 @@ inputs:
   excludes:
     description: List of directores to be excluded from scan
     required: false
-  full:
+  partial:
     description: Scan only changes
     required: false
     default: ''
@@ -39,4 +39,4 @@ runs:
     - ${{ inputs.workspace-id }}
     - ${{ inputs.release }}
     - ${{ inputs.excludes }}
-    - ${{ inputs.full }}
+    - ${{ inputs.partial }}

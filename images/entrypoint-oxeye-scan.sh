@@ -14,7 +14,7 @@ secret=$4
 workspace_id=$5
 release=$6
 excludes=$7
-full=$8
+partial=$8
 
 # Get Bearer ToKen
 bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
@@ -70,7 +70,7 @@ if [ -n "$excludes" ]; then
     scm_scan_flags="$scm_scan_flags --excludes $excludes"
 fi
 
-if [ "$full" == "true" ]; then
+if [ "$partial" == "false" ]; then
     scm_scan_flags="$scm_scan_flags --full"
 fi
 
