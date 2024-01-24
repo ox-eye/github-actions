@@ -6,7 +6,7 @@ variables:
   OXEYE_SCAN_WORKSPACE_ID: ''
   OXEYE_SCAN_RELEASE: ''
   OXEYE_SCAN_EXCLUDES: ''
-  OXEYE_SCAN_PARTIAL: ''
+  OXEYE_SCAN_PARTIAL: 'true'
 
 oxeye_scan:
   stage: oxeye_code_scan
