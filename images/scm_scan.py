@@ -443,6 +443,8 @@ def setup(
         branch=cicd_tool_params["branch"],
     )
 
+    logger.info(f"setup {cicd_tool_params=}")
+
     return cicd_tool_params, repo_params
 
 
@@ -865,6 +867,7 @@ def run_lightz(
     excludes: List[str],
     partial: bool = False,
 ) -> None:
+    logger.info(f"run_lightz {partial=}")
     download_lightz(
         host=host,
         client_id=client_id,
