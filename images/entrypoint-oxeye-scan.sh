@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ex
+set -e
 
 if [ "$#" -lt 5 ]; then
     echo "Error - Missing argument. Please verify your configuration, or contact support@oxeye.io"
