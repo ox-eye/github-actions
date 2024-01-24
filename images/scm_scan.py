@@ -77,14 +77,14 @@ logger = logging.getLogger("main")
 logger.setLevel(logging.INFO)
 formatter = JsonFormatter()
 
-stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setFormatter(formatter)
-logger.addHandler(stdout_handler)
+file_handler = logging.FileHandler(SCM_LOG_LOCATION)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 # Used only for debugging
-# file_handler = logging.FileHandler(SCM_LOG_LOCATION)
-# file_handler.setFormatter(formatter)
-# logger.addHandler(file_handler)
+# stdout_handler = logging.StreamHandler(sys.stdout)
+# stdout_handler.setFormatter(formatter)
+# logger.addHandler(stdout_handler)
 
 
 stop_keepalive_event: threading.Event = threading.Event()
@@ -442,8 +442,6 @@ def setup(
         description=cicd_tool_params["description"],
         branch=cicd_tool_params["branch"],
     )
-
-    logger.info(f"setup {cicd_tool_params=}")
 
     return cicd_tool_params, repo_params
 
@@ -867,7 +865,6 @@ def run_lightz(
     excludes: List[str],
     partial: bool = False,
 ) -> None:
-    logger.info(f"run_lightz {partial=}")
     download_lightz(
         host=host,
         client_id=client_id,
@@ -942,7 +939,6 @@ def main() -> None:
             release=arguments.release,
             excludes=arguments.excludes,
         )
-        logger.info(f"main {arguments.full=}")
         run_lightz(
             host=arguments.host,
             client_id=arguments.client_id,
