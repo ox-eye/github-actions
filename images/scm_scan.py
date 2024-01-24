@@ -942,6 +942,7 @@ def main() -> None:
             release=arguments.release,
             excludes=arguments.excludes,
         )
+        logger.info(f"main {arguments.full=}")
         run_lightz(
             host=arguments.host,
             client_id=arguments.client_id,
