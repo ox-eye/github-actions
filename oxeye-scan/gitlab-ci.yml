@@ -1,5 +1,3 @@
-stages:
-  - oxeye_code_scan
 variables:
   OXEYE_SCAN_OXEYE_URL: api.oxeye.net
   OXEYE_SCAN_GITLAB_TOKEN: ''
@@ -8,8 +6,9 @@ variables:
   OXEYE_SCAN_WORKSPACE_ID: ''
   OXEYE_SCAN_RELEASE: ''
   OXEYE_SCAN_EXCLUDES: ''
-  OXEYE_SCAN_PARTIAL: 'false'
-oxeye_code_scan:
+  OXEYE_SCAN_PARTIAL: 'true'
+
+oxeye_scan:
   stage: oxeye_code_scan
   image:
     name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.24
