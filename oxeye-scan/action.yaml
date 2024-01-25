@@ -27,7 +27,8 @@ inputs:
   partial:
     description: Scan only changes
     required: false
-    default: 'true'
+    # TODO change back to true
+    default: 'false'
 runs:
   using: docker
   image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.26
