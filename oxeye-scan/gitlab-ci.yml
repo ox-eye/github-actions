@@ -6,12 +6,11 @@ variables:
   OXEYE_SCAN_WORKSPACE_ID: ''
   OXEYE_SCAN_RELEASE: ''
   OXEYE_SCAN_EXCLUDES: ''
-    # TODO change back to true
   OXEYE_SCAN_PARTIAL: 'false'
 oxeye_scan:
   stage: oxeye_code_scan
   image:
-    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.26
+    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.27
     entrypoint:
       - /bin/sh
       - '-c'

@@ -27,11 +27,10 @@ inputs:
   partial:
     description: Scan only changes
     required: false
-    # TODO change back to true
     default: 'false'
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.26
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.27
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
