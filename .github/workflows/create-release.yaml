@@ -43,7 +43,7 @@ jobs:
                 "runs.image": "docker://ghcr.io/ox-eye/github-actions/oxeye-scan:${{ github.ref_name }}"
               },
               "oxeye-scan/gitlab-ci.yml": {
-                "oxeye_code_scan.image.name": "ghcr.io/ox-eye/github-actions/oxeye-scan:${{ github.ref_name }}"
+                "oxeye_scan.image.name": "ghcr.io/ox-eye/github-actions/oxeye-scan:${{ github.ref_name }}"
               }
             }
           message: '[skip ci] Update Docker Image Version for GitHub and GitLab actions to ${{ github.ref_name }}'

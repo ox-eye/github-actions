@@ -16,6 +16,3 @@ oxeye_scan:
       - '-c'
   script:
     - /entrypoint.sh ${OXEYE_SCAN_GITLAB_TOKEN} ${OXEYE_SCAN_OXEYE_URL} ${OXEYE_SCAN_CLIENT_ID} ${OXEYE_SCAN_SECRET} ${OXEYE_SCAN_WORKSPACE_ID} "${OXEYE_SCAN_RELEASE}" "${OXEYE_SCAN_EXCLUDES}" "${OXEYE_SCAN_PARTIAL}"
-oxeye_code_scan:
-  image:
-    name: ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.25
