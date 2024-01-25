@@ -30,7 +30,7 @@ inputs:
     default: 'true'
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.24
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.25
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
