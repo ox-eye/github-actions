@@ -34,7 +34,7 @@ inputs:
     default: 'https'
 runs:
   using: docker
-  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:v0.0.30
+  image: docker://ghcr.io/ox-eye/github-actions/oxeye-scan:scm-add_schema_var
   args:
     - ${{ inputs.token }}
     - ${{ inputs.host }}
