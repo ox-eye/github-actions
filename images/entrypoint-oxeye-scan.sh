@@ -22,6 +22,8 @@ if [ -z "$schema" ]; then
     schema="https"
 fi
 
+echo "host: ${host}"
+echo "schema: ${schema}"
 # Get Bearer ToKen
 bearerToken=$(curl -s -X POST --location "${schema}://${host}/api/auth/api-token" \
 --header 'Content-Type: application/json' \
