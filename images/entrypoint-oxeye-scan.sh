@@ -15,17 +15,17 @@ workspace_id=$5
 release=$6
 excludes=$7
 partial=$8
-schema=$9
+scheme=$9
 
 
-if [ -z "$schema" ]; then
+if [ -z "$scheme" ]; then
     schema="https"
+elif [ "$scheme" = "http" ]; then
+    echo "scheme: http" > "$HOME/.oxeye/config"
 fi
 
-echo "host: ${host}"
-echo "schema: ${schema}"
 # Get Bearer ToKen
-bearerToken=$(curl -s -X POST --location "${schema}://${host}/api/auth/api-token" \
+bearerToken=$(curl -s -X POST --location "${scheme}://${host}/api/auth/api-token" \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --data "{
@@ -56,7 +56,7 @@ fi
 git config --global --add safe.directory "*"
 
 # Download Script
-curl -s -o /app/scm_scan.py --location "${schema}://${host}/api/scm/script?provider=${cicd_tool}" \
+curl -s -o /app/scm_scan.py --location "${scheme}://${host}/api/scm/script?provider=${cicd_tool}" \
 --header "Content-Type: application/json" \
 --header "Accept: application/octet-stream" \
 --header "Authorization: Bearer ${bearerToken}"
