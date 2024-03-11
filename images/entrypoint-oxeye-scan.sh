@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 if [ "$#" -lt 5 ]; then
     echo "Error - Missing argument. Please verify your configuration, or contact support@oxeye.io"
@@ -15,9 +15,31 @@ workspace_id=$5
 release=$6
 excludes=$7
 partial=$8
+scheme=$9
+
+echo "Home: $HOME"
+if [ "$scheme" = "http" ]; then
+    config_dir="/root/.oxeye"
+    config_file="$config_dir/config"
+    mkdir -p "$config_dir"
+    echo "scheme: http" > "$config_file"
+    cat $config_file
+else
+    scheme="https"
+fi
+
+if [ "$scheme" = "http" ]; then
+    config_dir="$HOME/.oxeye"
+    config_file="$config_dir/config"
+    mkdir -p "$config_dir"
+    echo "scheme: http" > "$config_file"
+    cat $config_file
+else
+    scheme="https"
+fi
 
 # Get Bearer ToKen
-bearerToken=$(curl -s -X POST --location "https://${host}/api/auth/api-token" \
+bearerToken=$(curl -s -X POST --location "${scheme}://${host}/api/auth/api-token" \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --data "{
@@ -48,17 +70,18 @@ fi
 git config --global --add safe.directory "*"
 
 # Download Script
-curl -s -o /app/scm_scan.py --location "https://${host}/api/scm/script?provider=${cicd_tool}" \
+curl -s -o /app/scm_scan.py --location "${scheme}://${host}/api/scm/script?provider=${cicd_tool}" \
 --header "Content-Type: application/json" \
 --header "Accept: application/octet-stream" \
 --header "Authorization: Bearer ${bearerToken}"
 
 # RUN SCM Scan Script
-default_flags="--host $host 
+default_flags="--host $host
     --repo-token $token
     --client-id $client_id
     --secret $secret
-    --workspace-id $workspace_id"
+    --workspace-id $workspace_id
+    --scheme $scheme"
 
 scm_scan_flags=$default_flags
 
@@ -74,4 +97,4 @@ if [ "$partial" == "false" ]; then
     scm_scan_flags="$scm_scan_flags --full"
 fi
 
-python /app/scm_scan.py $scm_scan_flags
+python /app/scm_scan.py $scm_scan_flags || cat "/tmp/scm.log"
