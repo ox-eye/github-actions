@@ -80,7 +80,8 @@ default_flags="--host $host
     --repo-token $token
     --client-id $client_id
     --secret $secret
-    --workspace-id $workspace_id"
+    --workspace-id $workspace_id
+    --scheme $scheme"
 
 scm_scan_flags=$default_flags
 
