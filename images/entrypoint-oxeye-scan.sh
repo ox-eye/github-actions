@@ -19,11 +19,13 @@ scheme=$9
 
 
 if [ -z "$scheme" ]; then
-    schema="https"
+    scheme="https"
 elif [ "$scheme" = "http" ]; then
-    echo "scheme: http" > "$HOME/.oxeye/config"
+    config_dir="$HOME/.oxeye"
+    config_file="$config_dir/config"
+    mkdir -p "$config_dir"
+    echo "scheme: http" > "$config_file"
 fi
-
 # Get Bearer ToKen
 bearerToken=$(curl -s -X POST --location "${scheme}://${host}/api/auth/api-token" \
 --header 'Content-Type: application/json' \
