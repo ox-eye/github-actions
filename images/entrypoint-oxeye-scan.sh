@@ -17,6 +17,7 @@ excludes=$7
 partial=$8
 scheme=$9
 
+echo "Home: $HOME"
 if [ "$scheme" = "http" ]; then
     config_dir="$HOME/.oxeye"
     config_file="$config_dir/config"

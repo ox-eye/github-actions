@@ -29,7 +29,7 @@ inputs:
     required: false
     default: 'false'
   scheme:
-    description: schema for host variable
+    description: scheme for host variable
     required: false
     default: 'https'
 runs:
