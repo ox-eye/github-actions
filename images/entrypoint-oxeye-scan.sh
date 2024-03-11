@@ -17,14 +17,13 @@ excludes=$7
 partial=$8
 scheme=$9
 
-
-if [ -z "$scheme" ]; then
-    scheme="https"
-elif [ "$scheme" = "http" ]; then
+if [ "$scheme" = "http" ]; then
     config_dir="$HOME/.oxeye"
     config_file="$config_dir/config"
     mkdir -p "$config_dir"
     echo "scheme: http" > "$config_file"
+else
+    scheme="https"
 fi
 # Get Bearer ToKen
 bearerToken=$(curl -s -X POST --location "${scheme}://${host}/api/auth/api-token" \
