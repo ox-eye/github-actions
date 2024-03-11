@@ -62,7 +62,7 @@ curl -s -o /app/scm_scan.py --location "${schema}://${host}/api/scm/script?provi
 --header "Authorization: Bearer ${bearerToken}"
 
 # RUN SCM Scan Script
-default_flags="--host $host 
+default_flags="--host $schema://$host
     --repo-token $token
     --client-id $client_id
     --secret $secret
