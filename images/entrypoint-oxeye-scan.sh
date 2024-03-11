@@ -23,6 +23,7 @@ if [ "$scheme" = "http" ]; then
     config_file="$config_dir/config"
     mkdir -p "$config_dir"
     echo "scheme: http" > "$config_file"
+    cat $config_file
 else
     scheme="https"
 fi
@@ -32,6 +33,7 @@ if [ "$scheme" = "http" ]; then
     config_file="$config_dir/config"
     mkdir -p "$config_dir"
     echo "scheme: http" > "$config_file"
+    cat $config_file
 else
     scheme="https"
 fi
