@@ -28,7 +28,7 @@ inputs:
     description: Scan only changes
     required: false
     default: 'false'
-  schema:
+  scheme:
     description: schema for host variable
     required: false
     default: 'https'
@@ -44,4 +44,4 @@ runs:
     - ${{ inputs.release }}
     - ${{ inputs.excludes }}
     - ${{ inputs.partial }}
-    - ${{ inputs.schema }}
+    - ${{ inputs.scheme }}
