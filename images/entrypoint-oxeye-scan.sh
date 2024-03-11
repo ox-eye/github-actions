@@ -58,7 +58,7 @@ fi
 git config --global --add safe.directory "*"
 
 # Download Script
-curl -s -o /app/scm_scan.py --location "${host}/api/scm/script?provider=${cicd_tool}" \
+curl -s -o /app/scm_scan.py --location "${scheme}://${host}/api/scm/script?provider=${cicd_tool}" \
 --header "Content-Type: application/json" \
 --header "Accept: application/octet-stream" \
 --header "Authorization: Bearer ${bearerToken}"
